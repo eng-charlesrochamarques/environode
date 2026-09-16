@@ -1,0 +1,17 @@
+{
+  "name": "environode",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Multi-tenant IoT environmental monitoring platform.",
+  "workspaces": [
+    "apps/web",
+    "services/api",
+    "tools/device-simulator"
+  ],
+  "scripts": {
+    "dev:web": "npm --workspace apps/web run dev",
+    "dev:api": "npm --workspace services/api run dev",
+    "build:web": "npm --workspace apps/web run build",
+    "start:api": "npm --workspace services/api start"
+  }
+}
