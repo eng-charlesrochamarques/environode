@@ -1,6 +1,54 @@
 import bcrypt from "bcryptjs";
 
 const passwordHash = bcrypt.hashSync("demo123", 10);
+const demoTime = new Date().toISOString();
+
+const novalabDevices = Array.from({ length: 10 }, (_, index) => {
+  const number = String(index + 1).padStart(2, "0");
+  return {
+    id: `dev-novalab-${number}`,
+    organizationId: "org-novalab",
+    siteId: index < 6 ? "site-novalab-main" : "site-novalab-storage",
+    name: `Central ${number}`,
+    model: "ENV-SIM-01",
+    status: index === 7 ? "warning" : index === 9 ? "offline" : "online",
+    lastSeenAt: index === 9 ? null : demoTime,
+    sensors: [
+      { id: `sensor-novalab-${number}-t1`, name: "Temperatura A", kind: "temperature", unit: "C" },
+      { id: `sensor-novalab-${number}-h1`, name: "Umidade A", kind: "humidity", unit: "%" },
+      { id: `sensor-novalab-${number}-t2`, name: "Temperatura B", kind: "temperature", unit: "C" },
+      { id: `sensor-novalab-${number}-h2`, name: "Umidade B", kind: "humidity", unit: "%" }
+    ]
+  };
+});
+
+const circuitoDevices = [{
+  id: "dev-circuito-01",
+  organizationId: "org-circuito",
+  siteId: "site-circuito-rd",
+  name: "Central 01",
+  model: "ENV-SIM-01",
+  status: "online",
+  lastSeenAt: demoTime,
+  sensors: [
+    { id: "sensor-circuito-01-t1", name: "Temperatura A", kind: "temperature", unit: "C" },
+    { id: "sensor-circuito-01-h1", name: "Umidade A", kind: "humidity", unit: "%" }
+  ]
+}];
+
+const demoDevices = [...novalabDevices, ...circuitoDevices];
+const demoMeasurements = demoDevices.flatMap((device, deviceIndex) =>
+  device.status === "offline" ? [] : device.sensors.map((sensor, sensorIndex) => ({
+    id: `meas-${sensor.id}`,
+    organizationId: device.organizationId,
+    deviceId: device.id,
+    sensorId: sensor.id,
+    timestamp: demoTime,
+    value: sensor.kind === "temperature"
+      ? Number((22 + deviceIndex * 0.3 + sensorIndex * 0.2).toFixed(1))
+      : Number((45 + deviceIndex * 1.8 + sensorIndex).toFixed(1))
+  }))
+);
 
 export const seed = {
   organizations: [
@@ -37,120 +85,50 @@ export const seed = {
     {
       id: "site-novalab-main",
       organizationId: "org-novalab",
-      name: "Main Electronics Lab",
+      name: "Laboratório principal",
       location: "Sao Paulo, SP"
     },
     {
       id: "site-novalab-storage",
       organizationId: "org-novalab",
-      name: "Component Storage Room",
+      name: "Armazenamento de componentes",
       location: "Sao Paulo, SP"
     },
     {
       id: "site-circuito-rd",
       organizationId: "org-circuito",
-      name: "R&D Bench Area",
+      name: "Área de desenvolvimento",
       location: "Campinas, SP"
     },
     {
       id: "site-circuito-warehouse",
       organizationId: "org-circuito",
-      name: "ESD Warehouse",
+      name: "Depósito ESD",
       location: "Campinas, SP"
     }
   ],
-  devices: [
-    {
-      id: "dev-novalab-001",
-      organizationId: "org-novalab",
-      siteId: "site-novalab-main",
-      name: "Lab Bench Sensor 01",
-      model: "ENV-SIM-01",
-      status: "online",
-      lastSeenAt: "2026-09-16T18:00:00.000Z"
-    },
-    {
-      id: "dev-novalab-002",
-      organizationId: "org-novalab",
-      siteId: "site-novalab-storage",
-      name: "Storage Humidity Node",
-      model: "ENV-SIM-01",
-      status: "warning",
-      lastSeenAt: "2026-09-16T17:58:30.000Z"
-    },
-    {
-      id: "dev-circuito-001",
-      organizationId: "org-circuito",
-      siteId: "site-circuito-rd",
-      name: "R&D Thermal Monitor",
-      model: "ENV-SIM-01",
-      status: "online",
-      lastSeenAt: "2026-09-16T18:01:10.000Z"
-    },
-    {
-      id: "dev-circuito-002",
-      organizationId: "org-circuito",
-      siteId: "site-circuito-warehouse",
-      name: "Warehouse Sensor 02",
-      model: "ENV-SIM-01",
-      status: "offline",
-      lastSeenAt: "2026-09-16T17:12:00.000Z"
-    }
-  ],
-  measurements: [
-    {
-      id: "meas-001",
-      organizationId: "org-novalab",
-      deviceId: "dev-novalab-001",
-      timestamp: "2026-09-16T18:00:00.000Z",
-      temperatureC: 23.7,
-      humidityPercent: 46.2
-    },
-    {
-      id: "meas-002",
-      organizationId: "org-novalab",
-      deviceId: "dev-novalab-002",
-      timestamp: "2026-09-16T17:58:30.000Z",
-      temperatureC: 24.8,
-      humidityPercent: 68.9
-    },
-    {
-      id: "meas-003",
-      organizationId: "org-circuito",
-      deviceId: "dev-circuito-001",
-      timestamp: "2026-09-16T18:01:10.000Z",
-      temperatureC: 22.4,
-      humidityPercent: 44.1
-    },
-    {
-      id: "meas-004",
-      organizationId: "org-circuito",
-      deviceId: "dev-circuito-002",
-      timestamp: "2026-09-16T17:12:00.000Z",
-      temperatureC: 25.1,
-      humidityPercent: 51.5
-    }
-  ],
+  devices: demoDevices,
+  measurements: demoMeasurements,
   alerts: [
     {
       id: "alert-001",
       organizationId: "org-novalab",
-      deviceId: "dev-novalab-002",
+      deviceId: "dev-novalab-08",
       severity: "warning",
       status: "active",
       type: "humidity_high",
-      message: "Humidity is above the configured storage limit.",
-      createdAt: "2026-09-16T17:58:45.000Z"
+      message: "Umidade acima do limite configurado.",
+      createdAt: demoTime
     },
     {
       id: "alert-002",
       organizationId: "org-circuito",
-      deviceId: "dev-circuito-002",
-      severity: "critical",
+      deviceId: "dev-circuito-01",
+      severity: "warning",
       status: "active",
-      type: "device_offline",
-      message: "Device has not reported telemetry within the expected interval.",
-      createdAt: "2026-09-16T17:45:00.000Z"
+      type: "temperature_high",
+      message: "Temperatura acima do limite configurado.",
+      createdAt: demoTime
     }
   ]
 };

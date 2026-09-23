@@ -1,0 +1,29 @@
+.alerts-list { background: #fff; border: 1px solid #dce2e4; border-radius: 7px; overflow: hidden; }
+.alert-item { align-items: center; background: #fff; border: 0; border-bottom: 1px solid #e8edee; color: #202b30; display: flex; gap: 15px; min-height: 78px; padding: 14px 18px; text-align: left; width: 100%; }
+.alert-item:last-child { border-bottom: 0; }
+.alert-item:hover { background: #f7faf9; }
+.alert-indicator { align-items: center; border-radius: 6px; display: inline-flex; flex: none; height: 36px; justify-content: center; width: 36px; }
+.alert-indicator.severity-warning { background: #fff1db; color: #a76b12; }
+.alert-indicator.severity-critical { background: #fae8e4; color: #ab3d36; }
+.alert-copy { display: grid; flex: 1; gap: 3px; min-width: 0; }
+.alert-copy strong { font-size: .9rem; }
+.alert-copy span { color: #5b6a72; font-size: .85rem; overflow-wrap: anywhere; }
+.alert-time { color: #697980; font-size: .78rem; white-space: nowrap; }
+.alert-item > svg { color: #829198; flex: none; }
+
+.modal { background: #fff; border: 1px solid #dce2e4; border-radius: 8px; box-shadow: 0 24px 70px rgba(20, 36, 43, .2); color: #202b30; max-height: min(85vh, 700px); max-width: calc(100vw - 32px); padding: 0; width: 470px; }
+.modal::backdrop { background: rgba(23, 39, 46, .43); }
+.modal-header { align-items: center; border-bottom: 1px solid #e8edee; display: flex; justify-content: space-between; padding: 16px 20px; }
+.modal-header h2 { font-size: 1.05rem; margin: 0; }
+.modal-body { padding: 20px; }
+.modal-body h3 { font-size: 1rem; margin: 12px 0 7px; }
+.modal-body p { line-height: 1.5; }
+.alert-severity { display: inline-flex; font-size: .78rem; font-weight: 700; margin: 0; }
+.alert-severity.severity-warning { color: #95600d; }
+.alert-severity.severity-critical { color: #a33933; }
+.modal-time { align-items: center; color: #697980; display: flex; font-size: .82rem; gap: 7px; margin: 16px 0 22px; }
+
+@media (max-width: 600px) {
+  .alert-item { gap: 10px; padding: 13px 12px; }
+  .alert-time { display: none; }
+}

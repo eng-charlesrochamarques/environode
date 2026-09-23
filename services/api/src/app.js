@@ -5,9 +5,10 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { env } from "./config/env.js";
 import { requireAuth } from "./middlewares/requireAuth.js";
-import { login, me } from "./modules/auth/auth.controller.js";
+import { login, logout, me } from "./modules/auth/auth.controller.js";
 import {
   getDashboard,
+  getDevice,
   listAlerts,
   listDevices,
   listMeasurements,
@@ -20,9 +21,9 @@ export function createApp() {
   const app = express();
 
   app.use(helmet());
-  app.use(cors({ origin: env.corsOrigin }));
+  app.use(cors({ origin: env.corsOrigin, credentials: true }));
   app.use(express.json({ limit: "32kb" }));
-  app.use(morgan("dev"));
+  if (!env.isProduction) app.use(morgan("dev"));
   app.use(
     rateLimit({
       windowMs: 60 * 1000,
@@ -32,16 +33,25 @@ export function createApp() {
     })
   );
 
+  app.use("/api", (req, res, next) => {
+    if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method) && req.get("Origin") !== env.corsOrigin) {
+      return res.status(403).json({ error: { message: "Origem nao autorizada." } });
+    }
+    next();
+  });
+
   app.get("/health", (req, res) => {
     res.json({ status: "ok", service: "environode-api" });
   });
 
-  app.post("/api/auth/login", login);
+  app.post("/api/auth/login", rateLimit({ windowMs: 60 * 1000, limit: 5, standardHeaders: true, legacyHeaders: false }), login);
   app.get("/api/auth/me", requireAuth, me);
+  app.post("/api/auth/logout", logout);
 
   app.get("/api/dashboard", requireAuth, getDashboard);
   app.get("/api/sites", requireAuth, listSites);
   app.get("/api/devices", requireAuth, listDevices);
+  app.get("/api/devices/:deviceId", requireAuth, getDevice);
   app.get("/api/measurements", requireAuth, listMeasurements);
   app.get("/api/alerts", requireAuth, listAlerts);
 

@@ -1,41 +1,31 @@
 # Environode Web
 
-React/Vite dashboard for the Environode customer platform.
+Interface React/Vite organizada por responsabilidade. A tela de login é neutra. Após autenticar, a API informa o cliente da sessão e entrega apenas os dados autorizados.
 
-The web app will follow a domain-oriented structure so each area can grow without becoming tangled:
+## Pastas
 
 ```text
 src/
-  app/
-  assets/
+  app/                 # Sessão inicial e composição da aplicação
   components/
-    layout/
-    ui/
+    layout/            # Cabeçalho, menu lateral, rodapé e estrutura comum
+    ui/                # Modal, estados de carregamento, indicadores e métricas
   features/
-    auth/
-    dashboard/
-    organizations/
-    sites/
-    devices/
-    measurements/
-    alerts/
-    ai-summaries/
-  hooks/
-  lib/
-  routes/
-  styles/
+    auth/              # Entrada
+    dashboard/         # Resumo e lista de centrais
+    devices/           # Cartão, sensores e detalhe de uma central
+    alerts/            # Lista e popup de alerta
+  hooks/               # Carregamento de recursos da API
+  lib/                 # Cliente HTTP
+  routes/              # Definição das URLs e proteção visual das páginas
+  styles/              # Base, entrada, layout, centrais e alertas
 ```
 
-## Main Customer Areas
+## Rotas
 
-- Login.
-- Customer dashboard.
-- Sites/installations.
-- Equipment and devices.
-- Device status.
-- Current measurements.
-- Historical measurements.
-- Alerts and occurrences.
-- Optional AI summaries.
+- `/entrar`: acesso único para todos os clientes.
+- `/centrais`: resumo e equipamentos da conta autenticada.
+- `/centrais/:deviceId`: sensores e dados de uma central.
+- `/alertas`: alertas da conta autenticada; um modal mostra cada evento.
 
-Each authenticated user must only see data that belongs to their own organization.
+`routes/AppRoutes.jsx` impede a navegação visual sem sessão. Isso não substitui a segurança da API: todas as rotas de dados usam a organização obtida da sessão no servidor. A URL de uma central de outro cliente retorna 404.

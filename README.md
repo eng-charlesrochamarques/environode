@@ -12,9 +12,7 @@ The project will be built incrementally with an initial focus on the web platfor
 
 ## Current Status
 
-Phase 0: repository structure and architecture documentation.
-
-No application code has been implemented yet.
+Customer portal prototype with fictional in-memory data, login, tenant isolation, and a central/sensor overview. This is a local demo, not a production deployment.
 
 ## Repository Layout
 
@@ -42,7 +40,7 @@ environode/
 
 ## MVP Goal
 
-Demonstrate a multi-tenant IoT monitoring platform where each customer has its own account area to view sites, equipment, device status, telemetry, deterministic alerts, and optional AI-generated summaries that never control critical alert decisions.
+Demonstrate a multi-tenant IoT monitoring platform where each customer sees only their own central units, sensors, readings and alerts. A site is an optional physical location for grouping central units.
 
 ## Platform Priority
 
@@ -56,3 +54,9 @@ The first implementation phases prioritize the customer web platform:
 - Deterministic alerts.
 
 Firmware remains part of the roadmap, but it will be addressed after the platform foundation is stable.
+
+## Local demo
+
+Run `npm.cmd install`, then start `npm.cmd run dev:api` and `npm.cmd run dev:web` in separate terminals. Open `http://localhost:5173`. The login is neutral; use a fictional account from [docs/demo/README.md](docs/demo/README.md) for local testing. The first account has 10 central units with four sensors each. Readings are static demo values, not live telemetry.
+
+Run `npm.cmd run test:api` to verify tenant isolation and `npm.cmd run build:web` to verify the frontend build. Security decisions and production gaps are documented in [docs/security/README.md](docs/security/README.md).

@@ -1,0 +1,45 @@
+.metrics-grid { display: grid; gap: 14px; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 27px; }
+.metric-card { align-items: center; background: #fff; border: 1px solid #dce2e4; border-radius: 7px; display: grid; gap: 4px 10px; grid-template-columns: 34px minmax(0, 1fr); min-height: 94px; padding: 16px; }
+.metric-icon { align-items: center; background: #e5f0f0; border-radius: 6px; color: #146a6d; display: inline-flex; grid-row: 1 / 3; height: 34px; justify-content: center; width: 34px; }
+.metric-card > span:not(.metric-icon) { color: #5b6a72; font-size: .82rem; }
+.metric-card strong { font-size: 1.38rem; line-height: 1.1; }
+.tone-blue .metric-icon { background: #e8f0fa; color: #285f9c; }
+.tone-amber .metric-icon { background: #fff1db; color: #a76b12; }
+.tone-red .metric-icon { background: #fae8e4; color: #ab3d36; }
+
+.device-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.device-card { background: #fff; border: 1px solid #dce2e4; border-radius: 7px; display: flex; flex-direction: column; min-width: 0; padding: 18px; }
+.device-card-header { align-items: flex-start; display: flex; gap: 8px; justify-content: space-between; min-height: 48px; }
+.device-card-header h3 { font-size: 1rem; margin: 0 0 3px; }
+.device-card-header div > span { color: #5b6a72; font-size: .82rem; }
+.sensor-list { margin-top: 16px; }
+.sensor-reading { align-items: center; border-top: 1px solid #e8edee; display: flex; gap: 12px; justify-content: space-between; min-height: 43px; }
+.sensor-description { align-items: center; color: #47575e; display: inline-flex; font-size: .85rem; gap: 9px; min-width: 0; }
+.sensor-description svg { color: #285f9c; flex: none; }
+.sensor-description span { overflow-wrap: anywhere; }
+.sensor-value { display: grid; flex: none; justify-items: end; }
+.sensor-value strong { font-size: .9rem; white-space: nowrap; }
+.sensor-value small { color: #697980; font-size: .75rem; }
+.device-link { align-items: center; border-top: 1px solid #e8edee; color: #146a6d; display: inline-flex; font-size: .83rem; font-weight: 700; gap: 7px; margin-top: auto; padding-top: 13px; text-decoration: none; }
+.device-link:hover { text-decoration: underline; }
+
+.back-link { margin-bottom: 25px; }
+.detail-heading { align-items: center; }
+.detail-meta { border-bottom: 1px solid #dce2e4; border-top: 1px solid #dce2e4; display: grid; gap: 20px; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 20px 0; }
+.detail-meta div { display: grid; gap: 6px; min-width: 0; }
+.detail-meta span { color: #697980; font-size: .78rem; }
+.detail-meta strong { font-size: .9rem; overflow-wrap: anywhere; }
+.sensor-section { max-width: 760px; }
+.sensor-detail-list { border-bottom: 1px solid #dce2e4; }
+.sensor-detail-list .sensor-reading { min-height: 66px; }
+.detail-footnote { align-items: center; color: #697980; display: flex; font-size: .82rem; gap: 7px; margin-top: 22px; }
+
+@media (max-width: 1100px) { .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) {
+  .metrics-grid { gap: 9px; }
+  .metric-card { gap: 2px 8px; grid-template-columns: 28px minmax(0, 1fr); padding: 11px; }
+  .metric-icon { height: 28px; width: 28px; }
+  .metric-icon svg { height: 17px; width: 17px; }
+  .metric-card > span:not(.metric-icon) { font-size: .73rem; }
+  .detail-meta { gap: 16px; grid-template-columns: 1fr; }
+}
