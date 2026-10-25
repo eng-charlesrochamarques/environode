@@ -1,6 +1,7 @@
 import { Droplets, Thermometer } from "lucide-react";
+import { memo } from "react";
 
-export function SensorReading({ sensor, detailed = false }) {
+export const SensorReading = memo(function SensorReading({ sensor, detailed = false }) {
   const Icon = sensor.kind === "temperature" ? Thermometer : Droplets;
   const measurement = sensor.latestMeasurement;
   return (
@@ -12,4 +13,4 @@ export function SensorReading({ sensor, detailed = false }) {
       </div>
     </div>
   );
-}
+});

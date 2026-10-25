@@ -7,6 +7,7 @@ import { useResource } from "../../hooks/useResource.js";
 import { useTelemetryEvents } from "../../hooks/useTelemetryEvents.js";
 import { api } from "../../lib/api.js";
 import { SensorReading } from "./SensorReading.jsx";
+import { applyTelemetryToDevice } from "../telemetry/applyTelemetryEvent.js";
 
 export function DeviceDetailPage({ onUnauthorized }) {
   const { deviceId } = useParams();
@@ -14,9 +15,11 @@ export function DeviceDetailPage({ onUnauthorized }) {
     const [deviceData, measurementData] = await Promise.all([api.device(deviceId), api.deviceMeasurements(deviceId)]);
     return { ...deviceData, ...measurementData };
   }, [deviceId]);
-  const { data, error, loading, refresh } = useResource(load, onUnauthorized);
+  const { data, error, loading, refresh, update } = useResource(load, onUnauthorized);
   const device = data?.device;
-  const handleTelemetry = useCallback((event) => { if (event.deviceId === deviceId) refresh(); }, [deviceId, refresh]);
+  const handleTelemetry = useCallback((event) => {
+    if (event.deviceId === deviceId) update((current) => applyTelemetryToDevice(current, event));
+  }, [deviceId, update]);
   const live = useTelemetryEvents(handleTelemetry);
 
   return (

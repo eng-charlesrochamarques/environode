@@ -1,9 +1,10 @@
 import { ArrowRight } from "lucide-react";
+import { memo } from "react";
 import { Link } from "react-router";
 import { StatusBadge } from "../../components/ui/StatusBadge.jsx";
 import { SensorReading } from "./SensorReading.jsx";
 
-export function DeviceCard({ device }) {
+export const DeviceCard = memo(function DeviceCard({ device }) {
   return (
     <article className="device-card">
       <div className="device-card-header">
@@ -14,4 +15,4 @@ export function DeviceCard({ device }) {
       <Link className="device-link" to={`/centrais/${encodeURIComponent(device.id)}`}>Ver detalhes <ArrowRight size={16} /></Link>
     </article>
   );
-}
+});
