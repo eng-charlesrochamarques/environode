@@ -1,62 +1,64 @@
 # Environode
 
-Environode is a portfolio IoT platform for environmental monitoring in electronics labs and component storage areas.
+Plataforma IoT multiempresa para monitoramento de temperatura e umidade. Cada cliente acessa somente suas centrais, sensores, leituras e alertas.
 
-The project will be built incrementally with an initial focus on the web platform:
+## Estado atual
 
-- A React/Vite dashboard.
-- A Node.js/Express API with MongoDB.
-- A Node.js device simulator.
-- STM32 firmware for a NUCLEO-H753ZI telemetry client in a later phase.
-- Optional local AI summaries with Ollama/Qwen.
+- Login neutro com sessão em cookie protegido.
+- Isolamento por organização aplicado pela API e coberto por testes.
+- MongoDB persistente: incorporado em desenvolvimento ou externo em produção.
+- Ingestão HTTP autenticada para dispositivos.
+- Idempotência por `deviceId + bootId + sequence`.
+- Atualização da interface em tempo real por Server-Sent Events (SSE).
+- Histórico por central e alertas determinísticos por limite.
+- Simulador Node.js e bridge serial para STM32.
 
-## Current Status
-
-Customer portal prototype with fictional in-memory data, login, tenant isolation, and a central/sensor overview. This is a local demo, not a production deployment.
-
-## Repository Layout
+## Pastas
 
 ```text
-environode/
-  apps/
-    web/
-  services/
-    api/
-  firmware/
-    stm32-h753/
-  tools/
-    device-simulator/
-  docs/
-    api/
-    architecture/
-    demo/
-    firmware/
-    security/
-  docker-compose.yml
-  .env.example
-  .gitignore
-  README.md
+apps/web/                  React, rotas, componentes e telas
+services/api/src/
+  config/                  ambiente
+  controllers/             entrada e saída HTTP
+  database/                conexão e carga inicial
+  middlewares/             autenticação de usuário/dispositivo
+  models/                  schemas Mongoose
+  routes/                  contratos HTTP
+  services/                regras de plataforma, telemetria e SSE
+  shared/errors/           erros HTTP
+firmware/stm32-h753/       firmware C, CMake, build e gravação ST-LINK
+tools/device-simulator/    simulador e bridge serial
+docs/                      arquitetura, API, firmware e segurança
 ```
 
-## MVP Goal
+## Executar
 
-Demonstrate a multi-tenant IoT monitoring platform where each customer sees only their own central units, sensors, readings and alerts. A site is an optional physical location for grouping central units.
+```powershell
+npm.cmd install
+npm.cmd run dev:api
+npm.cmd run dev:web
+npm.cmd run dev:simulator
+```
 
-## Platform Priority
+Abra `http://localhost:5173`. As credenciais fictícias ficam em [docs/demo/README.md](docs/demo/README.md).
 
-The first implementation phases prioritize the customer web platform:
+No desenvolvimento, a API baixa uma cópia local do MongoDB na primeira execução e mantém banco e binário em `services/api/.data/`, fora do Git. Para usar MongoDB externo, configure `DATABASE_MODE=external` e `MONGODB_URI`.
 
-- Customer login and protected account area.
-- Organization-scoped dashboard.
-- Site and equipment/device inventory.
-- Device online/offline status.
-- Current and historical telemetry.
-- Deterministic alerts.
+Para encaminhar JSON da STM32 pela porta virtual:
 
-Firmware remains part of the roadmap, but it will be addressed after the platform foundation is stable.
+```powershell
+$env:SERIAL_PORT="COM5"
+npm.cmd run dev:serial
+```
 
-## Local demo
+O firmware de simulação da `NUCLEO-H753ZI`, incluindo os comandos de preparação, compilação e gravação, está em [firmware/stm32-h753/README.md](firmware/stm32-h753/README.md).
 
-Run `npm.cmd install`, then start `npm.cmd run dev:api` and `npm.cmd run dev:web` in separate terminals. Open `http://localhost:5173`. The login is neutral; use a fictional account from [docs/demo/README.md](docs/demo/README.md) for local testing. The first account has 10 central units with four sensors each. Readings are static demo values, not live telemetry.
+## Verificação
 
-Run `npm.cmd run test:api` to verify tenant isolation and `npm.cmd run build:web` to verify the frontend build. Security decisions and production gaps are documented in [docs/security/README.md](docs/security/README.md).
+```powershell
+npm.cmd run test:api
+npm.cmd run build:web
+npm.cmd audit
+```
+
+O contrato de telemetria está em [docs/api/README.md](docs/api/README.md) e as decisões de segurança em [docs/security/README.md](docs/security/README.md).

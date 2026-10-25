@@ -2,6 +2,7 @@
   "name": "environode",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "Multi-tenant IoT environmental monitoring platform.",
   "workspaces": [
     "apps/web",
@@ -11,8 +12,19 @@
   "scripts": {
     "dev:web": "npm --workspace apps/web run dev",
     "dev:api": "npm --workspace services/api run dev",
+    "dev:simulator": "npm --workspace tools/device-simulator start",
+    "dev:serial": "npm --workspace tools/device-simulator run bridge",
+    "dev": "npm run dev:api",
     "build:web": "npm --workspace apps/web run build",
     "start:api": "npm --workspace services/api start",
-    "test:api": "npm --workspace services/api test"
+    "test:api": "npm --workspace services/api test",
+    "lint": "eslint .",
+    "verify": "npm run lint && npm run test:api && npm run build:web && npm audit"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.13.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0"
   }
 }

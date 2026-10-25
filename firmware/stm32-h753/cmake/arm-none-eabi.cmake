@@ -1,0 +1,13 @@
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR arm)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
+set(ARM_TOOLCHAIN_HINT "$ENV{ARM_GNU_TOOLCHAIN_PATH}/bin")
+if(WIN32)
+  list(APPEND ARM_TOOLCHAIN_HINT "C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/14.2 rel1/bin")
+endif()
+
+find_program(CMAKE_C_COMPILER arm-none-eabi-gcc HINTS ${ARM_TOOLCHAIN_HINT} REQUIRED)
+find_program(CMAKE_ASM_COMPILER arm-none-eabi-gcc HINTS ${ARM_TOOLCHAIN_HINT} REQUIRED)
+find_program(CMAKE_OBJCOPY arm-none-eabi-objcopy HINTS ${ARM_TOOLCHAIN_HINT} REQUIRED)
+find_program(CMAKE_SIZE arm-none-eabi-size HINTS ${ARM_TOOLCHAIN_HINT} REQUIRED)

@@ -24,8 +24,14 @@ export function useResource(load, onUnauthorized) {
   }, [load, onUnauthorized]);
 
   useEffect(() => {
-    refresh();
-    return () => { requestId.current += 1; };
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (!cancelled) refresh();
+    });
+    return () => {
+      cancelled = true;
+      requestId.current += 1;
+    };
   }, [refresh]);
 
   return { data, error, loading, refresh };

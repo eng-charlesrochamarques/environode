@@ -17,6 +17,7 @@ pnpm-debug.log*
 dist/
 build/
 coverage/
+.data/
 
 # Local IDE/editor state
 .vscode/
@@ -29,6 +30,8 @@ Thumbs.db
 # STM32/CubeIDE generated build outputs
 Debug/
 Release/
+.venv/
+.vendor/
 *.elf
 *.bin
 *.hex

@@ -24,6 +24,8 @@ a { color: inherit; }
 .page-state p { margin-top: 0; }
 .empty-state { color: #5b6a72; padding: 22px 0; }
 .demo-notice { background: #eaf1f2; border-left: 3px solid #146a6d; color: #344f56; font-size: .9rem; margin: 0 0 20px; padding: 11px 14px; }
+.live-notice { align-items: center; background: #f0f3f4; border-left: 3px solid #829198; color: #52636a; display: flex; font-size: .86rem; gap: 8px; margin: 0 0 20px; padding: 10px 14px; }
+.live-notice.connected { background: #e3f2ec; border-color: #2c7a58; color: #216548; }
 .form-error { color: #ab3d36; font-size: .88rem; margin: 0; }
 
 .icon-button { align-items: center; background: #fff; border: 1px solid #dce2e4; border-radius: 6px; color: #334249; display: inline-flex; flex: none; height: 40px; justify-content: center; width: 40px; }

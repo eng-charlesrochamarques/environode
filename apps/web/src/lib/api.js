@@ -1,4 +1,5 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+export const EVENTS_URL = `${API_URL}/api/events`;
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_URL}${path}`, {
@@ -39,6 +40,9 @@ export const api = {
   },
   device(deviceId) {
     return request(`/api/devices/${encodeURIComponent(deviceId)}`);
+  },
+  deviceMeasurements(deviceId, limit = 100) {
+    return request(`/api/devices/${encodeURIComponent(deviceId)}/measurements?limit=${limit}`);
   },
   alerts() {
     return request("/api/alerts");

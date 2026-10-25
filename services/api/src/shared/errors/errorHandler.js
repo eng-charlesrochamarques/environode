@@ -1,5 +1,5 @@
-export function errorHandler(error, req, res, next) {
-  const statusCode = error.statusCode || 500;
+export function errorHandler(error, req, res, _next) {
+  const statusCode = error.statusCode || (error.name === "ValidationError" || error.name === "CastError" ? 400 : error.code === 11000 ? 409 : 500);
 
   if (statusCode >= 500) {
     console.error(error);
@@ -7,7 +7,7 @@ export function errorHandler(error, req, res, next) {
 
   res.status(statusCode).json({
     error: {
-      message: statusCode >= 500 ? "Internal server error." : error.message
+      message: statusCode >= 500 ? "Erro interno do servidor." : error.message
     }
   });
 }
