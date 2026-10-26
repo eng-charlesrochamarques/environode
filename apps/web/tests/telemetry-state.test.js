@@ -7,6 +7,7 @@ const event = {
   status: "online",
   sampledAt: "2026-10-25T18:00:00.000Z",
   receivedAt: "2026-10-25T18:00:00.100Z",
+  activeAlerts: 2,
   readings: [{ sensorId: "temperature-1", value: 23.4 }]
 };
 
@@ -33,6 +34,7 @@ test("atualiza somente a central e o sensor presentes no evento", () => {
   assert.equal(result.devices[0].sensors[1], changed.sensors[1]);
   assert.equal(result.totals.onlineDevices, 2);
   assert.equal(result.totals.offlineDevices, 0);
+  assert.equal(result.totals.activeAlerts, 2);
 });
 
 test("acrescenta o histórico sem recarregar os dados do equipamento", () => {

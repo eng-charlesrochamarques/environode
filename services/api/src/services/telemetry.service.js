@@ -74,9 +74,11 @@ export async function ingestTelemetry(device, body) {
 
   const warning = await updateAlerts(device, readings, receivedAt);
   await Device.updateOne({ _id: device.id }, { $set: { lastSeenAt: receivedAt, status: warning ? "warning" : "online" } });
+  const activeAlerts = await Alert.countDocuments({ organizationId: device.organizationId, status: "active" });
   const event = {
     deviceId: device.id,
     status: warning ? "warning" : "online",
+    activeAlerts,
     sampledAt,
     receivedAt,
     readings: readings.map(({ sensor, value }) => ({ sensorId: sensor.id, value }))

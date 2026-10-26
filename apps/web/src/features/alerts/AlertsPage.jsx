@@ -1,9 +1,10 @@
 import { ArrowRight, Bell, Clock3 } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Link } from "react-router";
 import { Modal } from "../../components/ui/Modal.jsx";
 import { PageState } from "../../components/ui/PageState.jsx";
 import { useResource } from "../../hooks/useResource.js";
+import { useTelemetryEvents } from "../../hooks/useTelemetryEvents.js";
 import { api } from "../../lib/api.js";
 
 const severityLabels = { warning: "Atenção", critical: "Crítico" };
@@ -11,6 +12,8 @@ const severityLabels = { warning: "Atenção", critical: "Crítico" };
 export function AlertsPage({ onUnauthorized }) {
   const { data, error, loading, refresh } = useResource(api.alerts, onUnauthorized);
   const [selected, setSelected] = useState(null);
+  const handleTelemetry = useCallback(() => refresh(), [refresh]);
+  useTelemetryEvents(handleTelemetry);
 
   return (
     <>

@@ -6,6 +6,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
+    "alerts": "node src/index.js --device=dev-circuito-01 --sensor-count=1 --mode=alert",
     "bridge": "node src/serial-bridge.js"
   },
   "dependencies": {

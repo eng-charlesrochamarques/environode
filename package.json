@@ -13,6 +13,7 @@
     "dev:web": "npm --workspace apps/web run dev",
     "dev:api": "npm --workspace services/api run dev",
     "dev:simulator": "npm --workspace tools/device-simulator start",
+    "dev:alerts": "npm --workspace tools/device-simulator run alerts",
     "dev:serial": "npm --workspace tools/device-simulator run bridge",
     "dev": "npm run dev:api",
     "build:web": "npm --workspace apps/web run build",

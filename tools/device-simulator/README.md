@@ -9,6 +9,16 @@ npm.cmd run dev:serial
 
 Quando o firmware omite metadados de transporte, o bridge cria um `bootId` por sessão e uma `sequence` crescente antes de autenticar o pacote na API.
 
+## Cenário de alertas
+
+Mantém a central fictícia da Circuito Verde online e envia temperatura e umidade acima dos limites configurados:
+
+```powershell
+npm.cmd run dev:alerts
+```
+
+Esse cenário pertence somente ao perfil `bruno@circuitoverde.example` e não aparece para o perfil da NovaLab.
+
 Envia telemetria autenticada para a API usando o mesmo contrato destinado à STM32.
 
 ```powershell

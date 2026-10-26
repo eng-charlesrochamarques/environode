@@ -37,6 +37,7 @@ export function applyTelemetryToDashboard(data, event) {
     ...data,
     totals: {
       ...data.totals,
+      activeAlerts: event.activeAlerts ?? data.totals.activeAlerts,
       onlineDevices: data.totals.onlineDevices + Number(isOnline) - Number(wasOnline),
       offlineDevices: data.totals.offlineDevices + Number(isOffline) - Number(wasOffline)
     },
